@@ -20,6 +20,17 @@ $config = [
                 'application/json' => 'yii\web\JsonParser',
             ]
         ],
+        'response' => [
+            'format' => \yii\web\Response::FORMAT_JSON,
+            'charset' => 'UTF-8',
+            'formatters' => [
+                \yii\web\Response::FORMAT_XML => [
+                    'class' => 'yii\web\JsonResponseFormatter',
+                    'prettyPrint' => YII_DEBUG,
+                    'encodeOptions' => JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE,
+                ],
+            ],
+        ],
         'cache' => [
             'class' => 'yii\caching\FileCache',
         ],
@@ -51,8 +62,9 @@ $config = [
             'showScriptName' => false,
             'rules' => [
                 '' => 'site/index',
+                ['class' => 'yii\rest\UrlRule', 'controller' => 'fixtures', 'pluralize'=>false],
                 '<controller:\w+>/<action:\w+>/' => '<controller>/<action>',
-                ['class' => 'yii\rest\UrlRule', 'controller' => 'user'],
+                '<controller:\w+>/<action:\w+>/<id:\d+>' => '<controller>/<action>',
             ],
         ],
     ],
